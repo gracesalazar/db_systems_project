@@ -1,0 +1,5 @@
+** Running in VSCode Python Virtual Environment **
+
+1. Install requirements from req.txt file
+2. Run 'python setup_all.py' in command line (creates dbs, imports data from csv files)
+3. Run 'python tests.py' in command line (to verify if tables were populated)
