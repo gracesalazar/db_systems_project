@@ -19,14 +19,10 @@ csv_file_path2 = 'data_sources/spotify_artists.csv'
 csv_file_path3 = 'data_sources/spotify_tracks.csv'
 
 # Connect to SQLite database (or create if it doesn't exist)
-conn1 = sqlite3.connect('albums.db')
-conn2 = sqlite3.connect('artists.db')
-conn3 = sqlite3.connect('tracks.db')
+conn = sqlite3.connect('music.db')
 
 # Execute the SQL script to create the schema
-execute_sql_file(conn1, sql_file_path)
-execute_sql_file(conn2, sql_file_path)
-execute_sql_file(conn3, sql_file_path)
+execute_sql_file(conn, sql_file_path)
 
 # Read the CSV file into a pandas DataFrame
 # Specify which columns to import
@@ -44,11 +40,9 @@ df2['genres'] = df2['genres'].apply(lambda x: ','.join(eval(x)) if isinstance(x,
 df3['artists_id'] = df3['artists_id'].apply(lambda x: ','.join(eval(x)) if isinstance(x, str) and x.startswith('[') else x)
 
 # Insert the data into the database table in smaller chunks
-df_to_sqlite(df1, conn1, 'albums', chunksize=100)  # Adjust the chunksize as necessary
-df_to_sqlite(df2, conn2, 'artists', chunksize=100)
-df_to_sqlite(df3, conn3, 'tracks', chunksize=100)
+df_to_sqlite(df1, conn, 'albums', chunksize=100) # Adjust the chunksize as necessary
+df_to_sqlite(df2, conn, 'artists', chunksize=100)
+df_to_sqlite(df3, conn, 'tracks', chunksize=100)
 
 # Close the database connection
-conn1.close()
-conn2.close()
-conn3.close()
+conn.close()
