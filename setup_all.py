@@ -35,7 +35,7 @@ df3 = pd.read_csv(csv_file_path3, usecols=desired_columns3)
 
 # Assuming the 'genres' column contains string representations of lists
 # Convert it from string representation of list to a string
-# This step may be optional depending on your CSV format
+# May be optional depending on CSV format
 df2['genres'] = df2['genres'].apply(lambda x: ','.join(eval(x)) if isinstance(x, str) and x.startswith('[') else x)
 df3['artists_id'] = df3['artists_id'].apply(lambda x: ','.join(eval(x)) if isinstance(x, str) and x.startswith('[') else x)
 
