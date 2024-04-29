@@ -1,1 +1,2 @@
 pip install sqlalchemy pandas
+pip install pandas tabulate
