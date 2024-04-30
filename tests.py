@@ -154,6 +154,15 @@ df10 = pd.read_sql_query("""
                             WHERE ar.name = 'Weyes Blood' and t.name = 'Movies' and t.album_id = al.id and ar.id = al.artist_id
                             """, conn)
 
+# ANALYZE example: Top 3 years with most album releases
+df11 = pd.read_sql_query("""
+                            SELECT STRFTIME('%Y', al.release_date) as release_year, COUNT(al.id) as total_albums
+                            FROM albums al
+                            GROUP BY release_year
+                            ORDER BY total_albums DESC
+                            LIMIT 3
+                            """, conn)
+
 
 # Display the results/DataFrames using tabulate
 # Options: can choose a different format such as 'psql', 'html', 'latex', etc.
@@ -167,6 +176,7 @@ print(tabulate(df7, headers='keys', tablefmt='psql'))
 print(tabulate(df8, headers='keys', tablefmt='psql'))
 print(tabulate(df9, headers='keys', tablefmt='psql'))
 print(tabulate(df10, headers='keys', tablefmt='psql'))
+print(tabulate(df11, headers='keys', tablefmt='psql'))
 
 # Close the connection
 conn.close()
