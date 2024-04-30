@@ -35,7 +35,7 @@ df3 = pd.read_csv(csv_file_path3, usecols=desired_columns3)
 
 # Assuming the 'genres' column contains string representations of lists
 # Convert it from string representation of list to a string
-# May be optional depending on CSV format
+# This step may be optional depending on your CSV format
 df2['genres'] = df2['genres'].apply(lambda x: ','.join(eval(x)) if isinstance(x, str) and x.startswith('[') else x)
 df3['artists_id'] = df3['artists_id'].apply(lambda x: ','.join(eval(x)) if isinstance(x, str) and x.startswith('[') else x)
 
@@ -44,27 +44,17 @@ df_to_sqlite(df1, conn, 'albums', chunksize=100) # Adjust the chunksize as neces
 df_to_sqlite(df2, conn, 'artists', chunksize=100)
 df_to_sqlite(df3, conn, 'tracks', chunksize=100)
 
-# Track to Album table
-df4 = pd.read_sql_query("SELECT t.id as track_id, t.name as track_name, t.duration_ms as track_duration, t.track_number as track_number, al.id as album_id, al.name as album_name, al.release_date as album_release_date, al.total_tracks as album_total_tracks FROM tracks t, albums al WHERE t.album_id = al.id", conn)
-df_to_sqlite(df4, conn, 'track_album', chunksize=100)
+# # Track to Album table
+# df4 = pd.read_sql_query("SELECT t.id as track_id, t.name as track_name, t.duration_ms as track_duration, t.track_number as track_number, al.id as album_id, al.name as album_name, al.release_date as album_release_date, al.total_tracks as album_total_tracks FROM tracks t, albums al WHERE t.album_id = al.id", conn)
+# df_to_sqlite(df4, conn, 'track_album', chunksize=100)
 
-# Album to Genre table
-df5 = pd.read_sql_query("SELECT al.id as album_id, al.name as album_name, al.release_date as album_release_date, al.total_tracks as album_total_tracks, ar.genres as genres FROM albums al, artists ar WHERE al.artist_id = ar.id", conn)
-df_to_sqlite(df5, conn, 'album_genre', chunksize=100)
+# # Album to Genre table
+# df5 = pd.read_sql_query("SELECT al.id as album_id, al.name as album_name, al.release_date as album_release_date, al.total_tracks as album_total_tracks, ar.genres as genres FROM albums al, artists ar WHERE al.artist_id = ar.id", conn)
+# df_to_sqlite(df5, conn, 'album_genre', chunksize=100)
 
-# Track to Artist table
-df6 = pd.read_sql_query("SELECT t.id as track_id, t.name as track_name, t.duration_ms as track_duration, t.track_number as track_number, ar.id as artist_id, ar.name as artist_name FROM tracks t, artists ar, albums al WHERE t.album_id = al.id and al.artist_id = ar.id", conn)
-df_to_sqlite(df6, conn, 'track_artist', chunksize=100)
-
-# All track info
-df7 = pd.read_sql_query("""SELECT t.name as track_name, t.id as track_id, t.track_number as track_number,
-                            t.duration_ms as track_duration_ms, t.artists_id as track_artists_id, t.popularity as track_popularity,
-                            al.album_type as album_type, al.id as album_id, al.name as album_name,
-                            al.release_date as album_release_date, al.total_tracks as album_total_tracks,
-                            ar.genres as artist_genres, ar.id as artist_id, ar.name as artist_name
-                            FROM tracks t, artists ar, albums al
-                            WHERE t.album_id = al.id and al.artist_id = ar.id""", conn)
-df_to_sqlite(df7, conn, 'all_tracks', chunksize=100)
+# # Track to Artist table
+# df6 = pd.read_sql_query("SELECT t.id as track_id, t.name as track_name, t.duration_ms as track_duration, t.track_number as track_number, ar.id as artist_id, ar.name as artist_name FROM tracks t, artists ar, albums al WHERE t.album_id = al.id and al.artist_id = ar.id", conn)
+# df_to_sqlite(df6, conn, 'track_artist', chunksize=100)
 
 # Close the database connection
 conn.close()
