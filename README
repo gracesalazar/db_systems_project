@@ -1,5 +1,8 @@
 ** Running in VSCode Python Virtual Environment **
 
+**** Make sure Data Sources folder from the SpotGenTrack
+     Popularity Dataset is in current working directory ****
+
 1. Install requirements from reqs.txt file
 2. Run 'python setup_all.py' in command line (creates dbs, imports data from csv files)
 3. Run 'python tests.py > tests_output.txt' in command line (to perform queries and see output in txt file)
